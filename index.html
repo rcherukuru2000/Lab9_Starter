@@ -86,6 +86,14 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
+  
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({
+      token: "05aa9b050582469f96c682ddfb4770bf"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 
   <script>
     let form = document.querySelector('form');
@@ -95,13 +103,127 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      //try,catch,finally
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        console.log('No errors');
+      } catch (error) {
+        console.error('Oops error, probably wrong input. Please check the numbers')
+      } finally {
+        console.log("Checks have been done");
+      }
+
     });
+
+    //custom error
+    class CustomErr extends Error {
+      constructor(msg) {
+        super(msg);
+        this.name = 'Custom Error';
+      }
+    }
+
+    try {
+      let string = "My name is Geoff"
+      let name = string.split(" ")
+      if (name[3] != 'Jeff') {
+        throw new CustomErr('Name is not Jeff');
+      }
+    } catch (error) {
+      if (error instanceof CustomErr) {
+        console.error(error);
+      } else {
+        throw error;
+      }
+    }
+
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    // Add behavior to buttons
+
+    errorBtns[0].addEventListener('click', function () {
+      console.log('Console Log Demo');
+    });
+
+    errorBtns[1].addEventListener('click', function () {
+      console.error('Console Log Error');
+    });
+    errorBtns[2].addEventListener('click', function () {
+      console.count('Total count: ');
+    });
+    errorBtns[3].addEventListener('click', function () {
+      console.warn('Warning!');
+    });
+    errorBtns[4].addEventListener('click', function () {
+      const x = "My name is Jeff";
+      const y = "My name is Geoff";
+      const reason = 'Both names are not the same';
+      console.assert(x == y, {
+        x,
+        y,
+        reason
+      });
+    });
+    errorBtns[5].addEventListener('click', function () {
+      console.clear();
+    });
+
+    errorBtns[6].addEventListener('click', function () {
+      console.dir(document.head);
+    });
+    errorBtns[7].addEventListener('click', function () {
+      console.dirxml(document);
+    });
+    errorBtns[8].addEventListener('click', function () {
+      const label = 'start group';
+      console.group(label);
+    });
+    errorBtns[9].addEventListener('click', function () {
+      const end = 'end group';
+      console.groupEnd(end);
+    });
+    errorBtns[10].addEventListener('click', function () {
+      console.table([{
+          first: 'Jeff',
+          last: 'Jeffrey',
+        },
+        {
+          first: 'Raghav',
+          last: 'Che',
+          birthday: '18930113',
+        },
+        {
+          first: 'Bob',
+          last: 'Bobby',
+        }
+      ]);
+    });
+    errorBtns[11].addEventListener('click', function () {
+      console.time('Time')
+    });
+    errorBtns[12].addEventListener('click', function () {
+      console.timeEnd('Time');
+    });
+    errorBtns[13].addEventListener('click', function () {
+      const one = () => {
+        two();
+      };
+      const two = () => {
+        three();
+      };
+      const three = () => {
+        four();
+      };
+      const four = () => {
+        console.trace();
+      };
+      one();
+    });
+    errorBtns[14].addEventListener('click', function () {
+      let globErr = new Error("Global Error");
+      throw globErr;
+    });
   </script>
 </body>
 
